@@ -22,6 +22,7 @@ button { font: inherit; }
   overflow-x: hidden;
   padding: clamp(1.5rem, 4vw, 4.75rem);
   position: relative;
+  width: 100%;
 }
 
 .portfolio-name {
@@ -55,6 +56,7 @@ button { font: inherit; }
   min-width: 0;
   padding: 1rem;
   position: relative;
+  transform: translateY(clamp(1.25rem, 3.5vh, 2.25rem));
   width: 100%;
   z-index: 3;
 }
@@ -64,13 +66,34 @@ button { font: inherit; }
 .about-highlights {
   display: flex;
   flex-direction: column;
-  font-size: clamp(1.2rem, 1.75vw, 1.8rem);
-  gap: .55rem;
+  gap: .7rem;
   letter-spacing: -.035em;
-  line-height: 1.08;
 }
 
 .about-highlights span { display: block; }
+
+.about-highlights .about-lead {
+  color: #063e5f;
+  font-size: clamp(2.35rem, 4vw, 4.4rem);
+  font-weight: 900;
+  letter-spacing: -.06em;
+  line-height: .95;
+}
+
+.about-highlights .about-role {
+  color: rgba(4, 56, 82, .9);
+  font-size: clamp(1.28rem, 1.8vw, 1.75rem);
+  font-weight: 780;
+  line-height: 1.1;
+}
+
+.about-highlights .about-social {
+  color: rgba(4, 56, 82, .7);
+  font-size: clamp(.95rem, 1.2vw, 1.1rem);
+  font-weight: 650;
+  letter-spacing: -.015em;
+  line-height: 1.35;
+}
 
 .about-highlights a {
   color: inherit;
@@ -238,6 +261,12 @@ h1 {
   position: absolute;
 }
 
+.orbit-wheel {
+  inset: 0;
+  position: absolute;
+  will-change: transform;
+}
+
 .dragon-ball-button {
   background: transparent;
   border: 0;
@@ -249,83 +278,23 @@ h1 {
   top: 50%;
   transform:
     translate(-50%, -50%)
-    rotate(calc(-180deg + var(--ball-slot) * 30deg))
+    rotate(var(--ball-angle))
     translateX(var(--orbit-radius))
-    rotate(calc(180deg - var(--ball-slot) * 30deg));
-  transition: transform .48s cubic-bezier(.2, .75, .2, 1);
+    rotate(var(--ball-counter-angle));
   width: 4.5rem;
 }
 
-.dragon-ball-button.ball-wrap-next {
-  animation: ball-transport-next .68s ease-in-out both;
-  z-index: 3;
+.dragon-ball-button:disabled,
+.arrow-button:disabled {
+  cursor: default;
 }
 
-.dragon-ball-button.ball-wrap-previous {
-  animation: ball-transport-previous .68s ease-in-out both;
-  z-index: 3;
-}
-
-@keyframes ball-transport-next {
-  0% {
-    filter: brightness(1);
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(-180deg) translateX(var(--orbit-radius)) rotate(180deg) scale(1);
-  }
-  38% {
-    filter: brightness(2.4) saturate(.7) blur(1px) drop-shadow(0 0 10px #fff8ac);
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-180deg) translateX(var(--orbit-radius)) rotate(180deg) scale(.08);
-  }
-  49% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-180deg) translateX(var(--orbit-radius)) rotate(180deg) scale(.08);
-  }
-  50% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg) scale(.08);
-  }
-  72% {
-    filter: brightness(2.2) saturate(.8) drop-shadow(0 0 13px #fff8ac);
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg) scale(1.14);
-  }
-  100% {
-    filter: brightness(1);
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg) scale(1);
-  }
-}
-
-@keyframes ball-transport-previous {
-  0% {
-    filter: brightness(1);
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg) scale(1);
-  }
-  38% {
-    filter: brightness(2.4) saturate(.7) blur(1px) drop-shadow(0 0 10px #fff8ac);
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg) scale(.08);
-  }
-  49% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg) scale(.08);
-  }
-  50% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-180deg) translateX(var(--orbit-radius)) rotate(180deg) scale(.08);
-  }
-  72% {
-    filter: brightness(2.2) saturate(.8) drop-shadow(0 0 13px #fff8ac);
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(-180deg) translateX(var(--orbit-radius)) rotate(180deg) scale(1.14);
-  }
-  100% {
-    filter: brightness(1);
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(-180deg) translateX(var(--orbit-radius)) rotate(180deg) scale(1);
-  }
+.ball-upright {
+  display: block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+  will-change: transform;
 }
 
 .dragon-ball {
@@ -475,13 +444,14 @@ h1 {
 .character-art {
   align-items: center;
   animation: scene-fly-in 1.15s cubic-bezier(.22, .75, .25, 1) both;
-  bottom: -2%;
+  bottom: 8%;
   display: flex;
   flex-direction: column;
   left: var(--scene-center);
+  pointer-events: none;
   position: absolute;
   transform: translateX(-50%);
-  width: clamp(18rem, 27vw, 24rem);
+  width: clamp(14rem, 19vw, 18rem);
   z-index: 2;
 }
 
@@ -529,18 +499,18 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
   .portfolio-shell { padding-block: 1.5rem; }
   .scene { min-height: calc(100vh - 3rem); }
   .orbit { --orbit-radius: min(18vw, 14rem); top: 58%; }
-  .character-art { bottom: 0; width: min(26vw, 20rem); }
+  .character-art { bottom: 8%; width: min(19vw, 17rem); }
   .scene-counter { bottom: 2%; }
 }
 
 @media (max-width: 1050px) {
   .portfolio-shell { display: flex; flex-direction: column; gap: 1rem; overflow-x: hidden; padding: 1.4rem 1rem 2.5rem; }
-  .section-content { align-self: stretch; max-width: 38rem; padding: 3.5rem 0 0; }
+  .section-content { align-self: stretch; max-width: 38rem; padding: 4.75rem 0 0; transform: none; }
   .portfolio-name { left: 1rem; top: 1.25rem; }
   .section-copy { min-height: 0; }
   .scene { --scene-center: 50%; align-self: stretch; min-height: 520px; width: 100%; }
   .orbit { --orbit-radius: min(32vw, 13rem); top: 57%; }
-  .character-art { width: min(52vw, 20rem); }
+  .character-art { bottom: 15%; width: min(38vw, 15.5rem); }
   .scene-sun { right: -2%; top: 1%; }
   .arrow-button-left { left: 12%; }
   .arrow-button-right { right: 12%; }
@@ -548,7 +518,7 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
 
 @media (max-width: 680px) {
   .about-cta { margin-top: 2.25rem; }
-  .impact-metrics { grid-template-columns: 1fr; max-width: 100%; }
+  .impact-metrics { max-width: 100%; }
   .impact-metrics div { min-height: 4.4rem; }
   .contact-cards { grid-template-columns: 1fr; }
   .project-list,
@@ -557,13 +527,14 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
 }
 
 @media (max-width: 520px) {
-  .portfolio-shell { padding-inline: .85rem; }
-  .section-content { padding-top: 3.1rem; }
-  .scene { min-height: 430px; }
-  .orbit { --orbit-radius: min(33vw, 8.25rem); top: 40%; }
+  .portfolio-shell { gap: .5rem; padding: 1rem .85rem 1.5rem; }
+  .portfolio-name { font-size: 1.65rem; left: .85rem; top: 1rem; }
+  .section-content { padding-top: 4rem; }
+  .scene { flex: 0 0 430px; min-height: 430px; }
+  .orbit { --orbit-radius: min(31.5vw, 8.1rem); top: 42%; }
   .dragon-ball-button { height: 3.35rem; width: 3.35rem; }
   .dragon-ball { height: 2.3rem; width: 2.3rem; }
-  .character-art { bottom: 1%; width: min(74vw, 19rem); }
+  .character-art { bottom: 36%; width: min(42vw, 11rem); }
   .scene-cloud-left { left: 1%; }
   .scene-cloud-right { right: 1%; }
   .scene-sky-line { left: 5%; width: 105%; }
@@ -572,7 +543,14 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
   .arrow-button-right { right: 4%; }
   h1 { font-size: 2.2rem; }
   .section-eyebrow { font-size: .66rem; }
-  .about-highlights { font-size: 1.15rem; }
+  .about-highlights { gap: .55rem; }
+  .about-highlights .about-lead { font-size: clamp(2.2rem, 12vw, 3.1rem); }
+  .about-highlights .about-role { font-size: 1.2rem; }
+  .about-highlights .about-social { font-size: .92rem; }
+  .impact-metrics { gap: .5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .impact-metrics div { min-height: 4.75rem; padding: .7rem; }
+  .impact-metrics strong { font-size: 1.2rem; }
+  .impact-metrics span { font-size: .68rem; }
   .github-history { margin-top: 1.25rem; padding: .4rem; }
   .project-list article,
   .skill-groups div,
@@ -581,10 +559,10 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
 }
 
 @media (max-width: 370px) {
-  .scene { min-height: 390px; }
-  .orbit { --orbit-radius: min(30vw, 7rem); top: 36%; }
+  .scene { flex-basis: 400px; min-height: 400px; }
+  .orbit { --orbit-radius: min(30vw, 7rem); top: 39%; }
   .dragon-ball-button { height: 3rem; width: 3rem; }
   .dragon-ball { height: 2.05rem; width: 2.05rem; }
   .dragon-ball-stars { transform: scale(.85); }
-  .character-art { width: 78vw; }
+  .character-art { width: 44vw; }
 }

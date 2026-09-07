@@ -76,12 +76,14 @@ export function SectionContent({ section }: SectionContentProps) {
 
   return (
     <section aria-labelledby={`${section.id}-title`} className="section-content">
-      <AnimatePresence mode="wait">
+      <AnimatePresence initial={false} mode="popLayout">
         <motion.div
+          animate={{ opacity: 1, y: 0 }}
           className="section-copy"
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          initial={{ opacity: 0, y: 6 }}
           key={section.id}
-          transition={{ duration: 0.18, ease: 'easeOut' }}
+          transition={{ duration: 0.22, ease: 'easeOut' }}
         >
           {section.id === 'about' ? (
             <>
@@ -94,16 +96,19 @@ export function SectionContent({ section }: SectionContentProps) {
               <h1 className="about-highlights" id={`${section.id}-title`}>
                 <motion.span
                   animate={{ opacity: 1, y: 0 }}
+                  className="about-lead"
                   initial={{ opacity: 0, y: 8 }}
                   transition={{ delay: isInitialLoad ? 1.3 : 0.12, duration: 0.58, ease: 'easeOut' }}
                 >{sectionContent.about.highlights[0]}</motion.span>
                 <motion.span
                   animate={{ opacity: 1, y: 0 }}
+                  className="about-role"
                   initial={{ opacity: 0, y: 8 }}
                   transition={{ delay: isInitialLoad ? 1.48 : 0.24, duration: 0.58, ease: 'easeOut' }}
                 >{sectionContent.about.highlights[1]}</motion.span>
                 <motion.span
                   animate={{ opacity: 1, y: 0 }}
+                  className="about-social"
                   initial={{ opacity: 0, y: 8 }}
                   transition={{ delay: isInitialLoad ? 1.66 : 0.36, duration: 0.58, ease: 'easeOut' }}
                 >

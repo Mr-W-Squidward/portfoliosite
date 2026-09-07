@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { Scene } from './components/Scene'
 import { SectionContent } from './components/SectionContent'
@@ -6,20 +6,35 @@ import { sections } from './data/sections'
 
 function App() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [navigationDirection, setNavigationDirection] = useState<0 | 1 | -1>(0)
+  const [isNavigating, setIsNavigating] = useState(false)
+  const isNavigatingRef = useRef(false)
+  const navigationTimerRef = useRef<number | null>(null)
+
+  useEffect(() => () => {
+    if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current)
+  }, [])
+
+  const beginNavigation = (navigate: () => void) => {
+    if (isNavigatingRef.current) return
+
+    isNavigatingRef.current = true
+    setIsNavigating(true)
+    navigate()
+    navigationTimerRef.current = window.setTimeout(() => {
+      isNavigatingRef.current = false
+      setIsNavigating(false)
+    }, 660)
+  }
 
   const cycle = (direction: 1 | -1) => {
-    setNavigationDirection(direction)
-    setActiveIndex((current) => (current + direction + sections.length) % sections.length)
+    beginNavigation(() => {
+      setActiveIndex((current) => (current + direction + sections.length) % sections.length)
+    })
   }
 
   const selectSection = (index: number) => {
-    if (index === activeIndex) return
-
-    const forwardDistance = (index - activeIndex + sections.length) % sections.length
-    const backwardDistance = (activeIndex - index + sections.length) % sections.length
-    setNavigationDirection(forwardDistance <= backwardDistance ? 1 : -1)
-    setActiveIndex(index)
+    if (index === activeIndex || isNavigatingRef.current) return
+    beginNavigation(() => setActiveIndex(index))
   }
 
   return (
@@ -28,7 +43,7 @@ function App() {
       <SectionContent section={sections[activeIndex]} />
       <Scene
         activeIndex={activeIndex}
-        navigationDirection={navigationDirection}
+        isNavigating={isNavigating}
         onNext={() => cycle(1)}
         onPrevious={() => cycle(-1)}
         onSelect={selectSection}

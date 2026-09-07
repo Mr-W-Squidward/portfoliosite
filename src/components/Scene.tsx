@@ -10,14 +10,14 @@ import nimbus from '../../assets/images/flying_nimbus.png'
 
 type SceneProps = {
   activeIndex: number
-  navigationDirection: 0 | 1 | -1
+  isNavigating: boolean
   onNext: () => void
   onPrevious: () => void
   onSelect: (index: number) => void
   sections: PortfolioSection[]
 }
 
-export function Scene({ activeIndex, navigationDirection, onNext, onPrevious, onSelect, sections }: SceneProps) {
+export function Scene({ activeIndex, isNavigating, onNext, onPrevious, onSelect, sections }: SceneProps) {
   return (
     <div className="scene" role="presentation">
       <img alt="" aria-hidden="true" className="scene-art scene-sun" src={sun} />
@@ -26,8 +26,8 @@ export function Scene({ activeIndex, navigationDirection, onNext, onPrevious, on
       <img alt="" aria-hidden="true" className="scene-art scene-cloud scene-cloud-right" src={cloudRight} />
       <img alt="" aria-hidden="true" className="scene-art scene-cloud scene-cloud-bottom" src={cloudRight} />
       <img alt="" aria-hidden="true" className="scene-art scene-star" src={star} />
-      <Arrows onNext={onNext} onPrevious={onPrevious} />
-      <Orbit activeIndex={activeIndex} navigationDirection={navigationDirection} onSelect={onSelect} sections={sections} />
+      <Arrows disabled={isNavigating} onNext={onNext} onPrevious={onPrevious} />
+      <Orbit activeIndex={activeIndex} isNavigating={isNavigating} onSelect={onSelect} sections={sections} />
       <div aria-label="Pixel art of Goku riding the Flying Nimbus" className="character-art" role="img">
         <div className="character-bob">
           <img alt="" className="goku-art" src={goku} />

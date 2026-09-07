@@ -1,12 +1,15 @@
 import type { CSSProperties } from 'react'
+import { motion } from 'framer-motion'
 
 type BallProps = {
+  angle: number
   index: number
   label: string
   isActive: boolean
-  navigationDirection: 0 | 1 | -1
+  isDisabled: boolean
   onClick: () => void
-  slot: number
+  transitionDuration: number
+  wheelRotation: number
 }
 
 const starPositions: Record<number, Array<[number, number]>> = {
@@ -19,36 +22,41 @@ const starPositions: Record<number, Array<[number, number]>> = {
   7: [[30, 23], [70, 23], [30, 50], [50, 50], [70, 50], [30, 77], [70, 77]],
 }
 
-export function Ball({ index, label, isActive, navigationDirection, onClick, slot }: BallProps) {
+export function Ball({ angle, index, label, isActive, isDisabled, onClick, transitionDuration, wheelRotation }: BallProps) {
   const starCount = index + 1
-  const wrapClass = navigationDirection === 1 && slot === 6
-    ? ' ball-wrap-next'
-    : navigationDirection === -1 && slot === 0
-      ? ' ball-wrap-previous'
-      : ''
 
   return (
     <button
       aria-label={`Show ${label}`}
       aria-pressed={isActive}
-      className={`dragon-ball-button${wrapClass}`}
+      className="dragon-ball-button"
+      disabled={isDisabled}
       onClick={onClick}
-      style={{ '--ball-slot': slot } as CSSProperties}
+      style={{
+        '--ball-angle': `${angle}deg`,
+        '--ball-counter-angle': `${-angle}deg`,
+      } as CSSProperties}
       type="button"
     >
-      <span aria-hidden="true" className="dragon-ball">
-        <span className="dragon-ball-shine" />
-        <span className="dragon-ball-stars">
-          {starPositions[starCount].map(([x, y], starIndex) => (
-            <span
-              className="dragon-ball-star"
-              key={starIndex}
-              style={{ '--star-x': `${x}%`, '--star-y': `${y}%` } as CSSProperties}
-            >★</span>
-          ))}
+      <motion.span
+        animate={{ rotate: -wheelRotation }}
+        className="ball-upright"
+        transition={{ duration: transitionDuration, ease: [0.2, 0.75, 0.2, 1] }}
+      >
+        <span aria-hidden="true" className="dragon-ball">
+          <span className="dragon-ball-shine" />
+          <span className="dragon-ball-stars">
+            {starPositions[starCount].map(([x, y], starIndex) => (
+              <span
+                className="dragon-ball-star"
+                key={starIndex}
+                style={{ '--star-x': `${x}%`, '--star-y': `${y}%` } as CSSProperties}
+              >★</span>
+            ))}
+          </span>
         </span>
-      </span>
-      <span className="ball-tooltip">{label}</span>
+        <span className="ball-tooltip">{label}</span>
+      </motion.span>
     </button>
   )
 }
