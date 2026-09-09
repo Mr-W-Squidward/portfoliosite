@@ -18,9 +18,10 @@ button { font: inherit; }
     #27b5d6;
   display: grid;
   grid-template-columns: minmax(17rem, .8fr) minmax(0, 1.5fr);
+  height: 100dvh;
   min-height: 100dvh;
-  overflow-x: hidden;
-  padding: clamp(1.5rem, 4vw, 4.75rem);
+  overflow: hidden;
+  padding: clamp(1.5rem, 4vh, 3.5rem) clamp(1.5rem, 4vw, 4.75rem);
   position: relative;
   width: 100%;
 }
@@ -238,17 +239,17 @@ h1 {
   --scene-center: 51%;
   align-self: stretch;
   isolation: isolate;
-  min-height: clamp(580px, 82vh, 760px);
+  min-height: 0;
   min-width: 0;
   position: relative;
 }
 
 .orbit {
-  --orbit-radius: clamp(13rem, 19.5vw, 19rem);
+  --orbit-radius: clamp(13rem, min(19.5vw, 34vh), 19rem);
   height: calc(var(--orbit-radius) * 2);
   left: var(--scene-center);
   position: absolute;
-  top: 58%;
+  top: 52%;
   transform: translate(-50%, -50%);
   width: calc(var(--orbit-radius) * 2);
   z-index: 1;
@@ -444,7 +445,7 @@ h1 {
 .character-art {
   align-items: center;
   animation: scene-fly-in 1.15s cubic-bezier(.22, .75, .25, 1) both;
-  bottom: 8%;
+  bottom: 18%;
   display: flex;
   flex-direction: column;
   left: var(--scene-center);
@@ -497,14 +498,13 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
 
 @media (min-width: 861px) and (max-height: 700px) {
   .portfolio-shell { padding-block: 1.5rem; }
-  .scene { min-height: calc(100vh - 3rem); }
-  .orbit { --orbit-radius: min(18vw, 14rem); top: 58%; }
-  .character-art { bottom: 8%; width: min(19vw, 17rem); }
+  .orbit { --orbit-radius: min(18vw, 34vh, 14rem); top: 51%; }
+  .character-art { bottom: 17%; width: min(19vw, 17rem); }
   .scene-counter { bottom: 2%; }
 }
 
 @media (max-width: 1050px) {
-  .portfolio-shell { display: flex; flex-direction: column; gap: 1rem; overflow-x: hidden; padding: 1.4rem 1rem 2.5rem; }
+  .portfolio-shell { display: flex; flex-direction: column; gap: 1rem; height: auto; overflow-x: hidden; overflow-y: visible; padding: 1.4rem 1rem 2.5rem; }
   .section-content { align-self: stretch; max-width: 38rem; padding: 4.75rem 0 0; transform: none; }
   .portfolio-name { left: 1rem; top: 1.25rem; }
   .section-copy { min-height: 0; }

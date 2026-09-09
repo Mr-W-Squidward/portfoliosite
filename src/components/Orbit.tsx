@@ -15,7 +15,7 @@ export function Orbit({ activeIndex, isNavigating, onSelect, sections }: OrbitPr
   const [rotationSteps, setRotationSteps] = useState(0)
   const prefersReducedMotion = useReducedMotion()
   const stepAngle = 360 / sections.length
-  const transitionDuration = prefersReducedMotion ? 0 : 0.62
+  const transitionDuration = prefersReducedMotion ? 0 : 0.52
 
   useLayoutEffect(() => {
     const previousIndex = previousIndexRef.current

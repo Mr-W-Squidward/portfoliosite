@@ -23,7 +23,7 @@ function App() {
     navigationTimerRef.current = window.setTimeout(() => {
       isNavigatingRef.current = false
       setIsNavigating(false)
-    }, 660)
+    }, 560)
   }
 
   const cycle = (direction: 1 | -1) => {
